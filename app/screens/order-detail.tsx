@@ -5,14 +5,15 @@ import { AppColors } from '@/constants/colors';
 import { BorderRadius, Spacing } from '@/constants/spacing';
 import { FontSizes, FontWeights } from '@/constants/typography';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 
 
@@ -25,6 +26,8 @@ export const OrderDetailScreen: React.FC<OrderDetailScreenProps> = ({
   orderId,
   onBack,
 }) => {
+  const router = useRouter();
+  const handleBack = () => router.back();
   const statusSteps = [
     { status: 'pending' as const, label: 'Order Received', timestamp: '05:58 PM, 31 Jan 2024', completed: true },
     { status: 'preparing' as const, label: 'Preparing', timestamp: '06:00 PM, 31 Jan 2024', completed: true },
@@ -42,13 +45,16 @@ export const OrderDetailScreen: React.FC<OrderDetailScreenProps> = ({
         {/* Header */}
         <View style={styles.header}>
           <Pressable
-            onPress={onBack}
-            style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
+            onPress={handleBack}
+            style={({ pressed }) => [
+              styles.headerButton,
+              pressed && styles.pressed,
+            ]}
           >
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
-              color={AppColors.text.dark}
+              color={AppColors.primary}
             />
           </Pressable>
           <Text style={styles.title}>Order #012345</Text>
@@ -87,7 +93,7 @@ export const OrderDetailScreen: React.FC<OrderDetailScreenProps> = ({
         </View>
 
         {/* Order Status Timeline */}
-        <View style={styles.section}>
+        <View style={[styles.section, { paddingHorizontal: Spacing.xl }]}>
           <OrderStatusTimeline
             steps={statusSteps}
             containerStyle={styles.timeline}
@@ -101,11 +107,12 @@ export const OrderDetailScreen: React.FC<OrderDetailScreenProps> = ({
         </View>
 
         {/* Reorder Button */}
-        <Button
-          title="Reorder same items"
-          onPress={() => console.log('Reorder')}
-          containerStyle={styles.reorderButton}
-        />
+        <View style={styles.reorderButton}>
+          <Button
+            title="Reorder same items"
+            onPress={() => console.log('Reorder')}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -125,6 +132,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.lg,
+  },
+  headerButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: AppColors.background.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: AppColors.primary,
   },
   backButton: {
     width: 44,
@@ -147,7 +164,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: FontSizes.md,
     fontWeight: FontWeights.semibold,
-    color: AppColors.text.dark,
+    color: AppColors.text.mehndi,
     marginBottom: Spacing.md,
   },
   summaryContainer: {

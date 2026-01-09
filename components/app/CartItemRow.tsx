@@ -3,6 +3,7 @@ import { BorderRadius, Spacing } from '@/constants/spacing';
 import { FontSizes, FontWeights } from '@/constants/typography';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
+import { Image } from 'react-native';
 import {
   Pressable,
   StyleSheet,
@@ -15,7 +16,7 @@ export interface CartItem {
   name: string;
   price: number;
   quantity: number;
-  image?: string;
+  image?: string | any;
 }
 
 interface CartItemRowProps {
@@ -34,7 +35,18 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <View style={styles.imagePlaceholder} />
+        {item.image ? (
+          <Image
+            source={typeof item.image === 'string' && item.image.startsWith('http') 
+              ? { uri: item.image } 
+              : item.image
+            }
+            style={{width: 70, height: 70, borderRadius: BorderRadius.lg}}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={styles.imagePlaceholder} />
+        )}
       </View>
       <View style={{ flex: 1, flexDirection: 'column', gap: Spacing.sm, justifyContent: 'space-between' }}>
         <View style={styles.content}>

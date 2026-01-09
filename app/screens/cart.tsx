@@ -38,12 +38,14 @@ export const CartScreen: React.FC<CartScreenProps> = ({
       name: 'Flaky Butter Croissant',
       price: 5.5,
       quantity: 1,
+      image: require('../../assets/images/Croissants.png')
     },
     {
       id: '2',
       name: 'Red Velvet Cupcake',
       price: 4.0,
       quantity: 2,
+      image: require('../../assets/images/cake.png')
     },
   ]);
 
@@ -87,7 +89,7 @@ export const CartScreen: React.FC<CartScreenProps> = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-       
+
         {/* Header with Back Button */}
         <View style={styles.header}>
           <Pressable
@@ -100,7 +102,7 @@ export const CartScreen: React.FC<CartScreenProps> = ({
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
-              color={AppColors.text.dark}
+              color={AppColors.primary}
             />
           </Pressable>
           {/* <Pressable
@@ -110,7 +112,7 @@ export const CartScreen: React.FC<CartScreenProps> = ({
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
-              color={AppColors.text.dark}
+              color={AppColors.primary}
             />
           </Pressable> */}
           <Text style={styles.title}>My Cart</Text>
@@ -201,16 +203,16 @@ const styles = StyleSheet.create({
   scrollContent: {
     // paddingBottom: Spacing.xl,
   },
- 
+
   headerButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: AppColors.background.white,
+    backgroundColor: AppColors.background.accent,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: AppColors.border.light,
+    borderColor: AppColors.primary,
   },
   header: {
     flexDirection: 'row',

@@ -24,6 +24,7 @@ export const OrderSuccessScreen: React.FC<OrderSuccessScreenProps> = ({
 }) => {
   const router = useRouter();
   const handleBack = () => router.back();
+  const handleTrackOrder = () => router.push('/my-orders' as any);
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -42,14 +43,14 @@ export const OrderSuccessScreen: React.FC<OrderSuccessScreenProps> = ({
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
-              color={AppColors.text.dark}
+              color={AppColors.primary}
             />
           </Pressable>
           {/* <Pressable style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}>
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
-              color={AppColors.text.dark}
+              color={AppColors.primary}
             />
           </Pressable> */}
         </View>
@@ -106,7 +107,7 @@ export const OrderSuccessScreen: React.FC<OrderSuccessScreenProps> = ({
               color={AppColors.primary}
             />
             <Text style={styles.detailText}>
-              You'll receive notifications about your order
+              {` You'll receive notifications about your order`}
             </Text>
           </View>
         </View>
@@ -115,7 +116,7 @@ export const OrderSuccessScreen: React.FC<OrderSuccessScreenProps> = ({
         <View style={{ marginHorizontal: Spacing.xl }}>
           <Button
             title="Track Your Order"
-            onPress={onTrackOrder}
+            onPress={handleTrackOrder}
           // containerStyle={styles.trackButton}
           />
         </View>
@@ -138,15 +139,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.lg,
   },
-  headerButton: {
+    headerButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: AppColors.background.white,
+    backgroundColor: AppColors.background.accent,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: AppColors.border.light,
+    borderColor: AppColors.primary,
   },
   backButton: {
     width: 44,

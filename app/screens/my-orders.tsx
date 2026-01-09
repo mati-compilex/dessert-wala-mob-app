@@ -2,14 +2,15 @@ import { AppColors } from '@/constants/colors';
 import { BorderRadius, Spacing } from '@/constants/spacing';
 import { FontSizes, FontWeights } from '@/constants/typography';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 
 
@@ -28,6 +29,9 @@ interface MyOrdersScreenProps {
 export const MyOrdersScreen: React.FC<MyOrdersScreenProps> = ({
   onOrderPress,
 }) => {
+  const router = useRouter();
+  const handleBack = () => router.back();
+  const handleOrderPress = (orderId: string) => router.push(`/order-detail?orderId=${orderId}` as any);
   const [activeTab, setActiveTab] = useState<'today' | 'past'>('today');
 
   const todayOrders: Order[] = [
@@ -86,13 +90,26 @@ export const MyOrdersScreen: React.FC<MyOrdersScreenProps> = ({
       >
         {/* Header */}
         <View style={styles.header}>
-          <Pressable style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}>
+          <Pressable
+            onPress={handleBack}
+            style={({ pressed }) => [
+              styles.headerButton,
+              pressed && styles.pressed,
+            ]}
+          >
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
-              color={AppColors.text.dark}
+              color={AppColors.primary}
             />
           </Pressable>
+          {/* <Pressable style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}>
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={24}
+              color={AppColors.primary}
+            />
+          </Pressable> */}
           <Text style={styles.title}>My Orders</Text>
           <View style={styles.backButton} />
         </View>
@@ -145,7 +162,7 @@ export const MyOrdersScreen: React.FC<MyOrdersScreenProps> = ({
                 styles.orderCard,
                 pressed && styles.pressed,
               ]}
-              onPress={() => onOrderPress(order.id)}
+              onPress={() => handleOrderPress(order.id)}
             >
               <View style={styles.orderContent}>
                 <Text style={styles.orderNumber}>{order.orderNumber}</Text>
@@ -201,7 +218,7 @@ export const MyOrdersScreen: React.FC<MyOrdersScreenProps> = ({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: AppColors.background.cream,
+    backgroundColor: AppColors.background.light,
   },
   scrollContent: {
     paddingBottom: Spacing.xl,
@@ -212,6 +229,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.lg,
+  },
+  headerButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: AppColors.background.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: AppColors.primary,
   },
   backButton: {
     width: 44,
@@ -230,22 +257,32 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     gap: Spacing.md,
-    paddingHorizontal: Spacing.xl,
+    marginHorizontal: Spacing.xl,
     marginBottom: Spacing.xl,
+    backgroundColor: AppColors.background.accent,
+    borderWidth: 1,
+    borderRadius: BorderRadius.round,
+    borderColor: AppColors.border.light,
+    overflow: 'hidden',
+    padding: Spacing.xs,
   },
   tabButton: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: Spacing.sm,
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.lg,
-    backgroundColor: AppColors.background.white,
+    // backgroundColor: AppColors.background.white,
     borderRadius: BorderRadius.round,
-    alignItems: 'center',
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: AppColors.border.light,
   },
   tabButtonActive: {
-    backgroundColor: AppColors.primary,
+    backgroundColor: AppColors.background.accentDark,
     borderColor: AppColors.primary,
+    borderWidth: 1
   },
   tabLabel: {
     fontSize: FontSizes.sm,
@@ -253,7 +290,7 @@ const styles = StyleSheet.create({
     color: AppColors.text.medium,
   },
   tabLabelActive: {
-    color: AppColors.background.white,
+    color: AppColors.primary
   },
   tabIndicator: {
     marginTop: Spacing.xs,

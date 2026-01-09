@@ -61,7 +61,7 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
-              color={AppColors.text.dark}
+              color={AppColors.primary}
             />
           </Pressable>
           {/* <Pressable
@@ -71,7 +71,7 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
-              color={AppColors.text.dark}
+              color={AppColors.primary}
             />
           </Pressable> */}
           <Text style={styles.title}>Checkout</Text>
@@ -312,15 +312,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.lg,
   },
-  headerButton: {
+    headerButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: AppColors.background.white,
+    backgroundColor: AppColors.background.accent,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: AppColors.border.light,
+    borderColor: AppColors.primary,
   },
   backButton: {
     width: 44,

@@ -75,7 +75,7 @@ export const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
-              color={AppColors.text.dark}
+              color={AppColors.primary}
             />
           </Pressable>
           <Pressable
@@ -217,15 +217,15 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 10,
   },
-  headerButton: {
+    headerButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: AppColors.background.white,
+    backgroundColor: AppColors.background.accent,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: AppColors.border.light,
+    borderColor: AppColors.primary,
   },
   pressed: {
     opacity: 0.7,

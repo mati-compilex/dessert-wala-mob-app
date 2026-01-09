@@ -6,12 +6,14 @@ import { FontSizes, FontWeights } from '@/constants/typography';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
 } from 'react-native';
 
 
@@ -21,9 +23,9 @@ interface HomeScreenProps {
 }
 
 const MOCK_CATEGORIES = [
-  { id: '1', label: 'Cupcakes', icon: 'cake' },
-  { id: '2', label: 'Croissants', icon: 'bread-slice' },
-  { id: '3', label: 'Cookies', icon: 'cookie' },
+  { id: '1', label: 'Cupcakes',  image: require('../../assets/images/cake.png') },
+  { id: '2', label: 'Croissants', image: require('../../assets/images/Croissants.png') },
+  { id: '3', label: 'Cookies', image: require('../../assets/images/Cookies.png') },
 ];
 
 const MOCK_PRODUCTS = [
@@ -33,6 +35,7 @@ const MOCK_PRODUCTS = [
     price: 4.0,
     rating: 4.8,
     description: 'Freshly baked cupcakes, served with sprinkled seasoning',
+    image: require('../../assets/images/redvelvet.png'),
   },
   {
     id: '2',
@@ -40,6 +43,7 @@ const MOCK_PRODUCTS = [
     price: 4.0,
     rating: 4.9,
     description: 'Freshly baked cupcakes, served with sprinkled seasoning',
+    image: require('../../assets/images/Croissants.png'),
   },
   {
     id: '3',
@@ -47,6 +51,7 @@ const MOCK_PRODUCTS = [
     price: 12.0,
     rating: 5.0,
     description: 'Rich chocolate cake with a gooey molten center topped with vanilla ice cream',
+    image: require('../../assets/images/Cookies.png'),
   },
 ];
 
@@ -68,27 +73,32 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.title}>DESSERT WALA</Text>
-        </View>
+        <ImageBackground 
+          source={require('../../assets/images/header-bg.png')}
+          style={styles.headerContainer}
+        >
+          {/* Header */}
+          <View style={styles.header}>
+            <Image source={require('../../assets/images/Logo.png')} />
+            {/* <Text style={styles.title}>DESSERT WALA</Text> */}
+          </View>
 
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <MaterialCommunityIcons
-            name="magnify"
-            size={20}
-            color={AppColors.text.light}
-          />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search your cravings..."
-            placeholderTextColor={AppColors.text.light}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
-
+          {/* Search Bar */}
+          <View style={styles.searchContainer}>
+            <MaterialCommunityIcons
+              name="magnify"
+              size={20}
+              color={AppColors.text.light}
+            />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search your cravings..."
+              placeholderTextColor={AppColors.text.light}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+          </View>
+        </ImageBackground>
         {/* Categories Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>What Do You Crave?</Text>
@@ -101,7 +111,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <CategoryChip
                 key={category.id}
                 label={category.label}
-                icon={category.icon}
+                image={category.image}
                 isSelected={selectedCategory === category.id}
                 onPress={() => handleCategorySelect(category.id)}
               />
@@ -132,6 +142,11 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: Spacing.xl,
+  },
+  headerContainer: {
+    backgroundColor:"#FFEFCC",
+    marginBottom: Spacing.xl,
+    paddingTop: 80,
   },
   header: {
     paddingHorizontal: Spacing.xl,

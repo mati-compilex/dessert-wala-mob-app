@@ -44,7 +44,7 @@ export const CategoryChip: React.FC<CategoryChipProps> = ({
         <Image source={image} style={styles.image} />
       ) : icon ? (
         <MaterialCommunityIcons
-          name={icon}
+          name={icon as any}
           size={32}
           color={isSelected ? AppColors.background.white : AppColors.primary}
         />
@@ -61,24 +61,25 @@ export const CategoryChip: React.FC<CategoryChipProps> = ({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.md,
-    borderRadius: BorderRadius.lg,
-    backgroundColor: '#FDE8D4',
-    marginRight: Spacing.md,
+    // paddingVertical: Spacing.md,
+    // paddingHorizontal: Spacing.md,
+    // borderRadius: BorderRadius.lg,
+    // backgroundColor: '#FDE8D4',
+    // marginRight: Spacing.md,
     minWidth: 100,
   },
   selected: {
-    backgroundColor: AppColors.primary,
+    // backgroundColor: "#FDE8D4",
   },
   pressed: {
     opacity: 0.8,
   },
   image: {
-    width: 50,
-    height: 50,
+    // width: 50,
+    // height: 50,
     resizeMode: 'contain',
     marginBottom: Spacing.sm,
+    borderRadius: BorderRadius.xl,
   },
   placeholderImage: {
     width: 50,
@@ -93,6 +94,6 @@ const styles = StyleSheet.create({
     color: AppColors.text.dark,
   },
   selectedLabel: {
-    color: AppColors.background.white,
+    color: AppColors.primary,
   },
 });

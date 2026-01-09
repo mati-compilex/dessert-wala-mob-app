@@ -30,6 +30,8 @@ export default function TabLayout() {
         <Tabs.Screen name="orders" options={{ title: 'Orders' }} />
         <Tabs.Screen name="cart" options={{ title: 'Cart' }} />
         <Tabs.Screen name="account" options={{ title: 'Account' }} />
+        <Tabs.Screen name="checkout" options={{ title: 'Checkout' }} />
+        
       </Tabs>
 
       <CustomBottomBar />

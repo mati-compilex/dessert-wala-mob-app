@@ -4,10 +4,10 @@ import { FontSizes, FontWeights } from '@/constants/typography';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import {
-    Pressable,
-    StyleSheet,
-    Text,
-    View
+  Pressable,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 
 export interface CartItem {
@@ -36,57 +36,60 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
       <View style={styles.imageContainer}>
         <View style={styles.imagePlaceholder} />
       </View>
-
-      <View style={styles.content}>
-        <Text style={styles.name} numberOfLines={2}>
-          {item.name}
-        </Text>
-        <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-      </View>
-
-      <View style={styles.actions}>
-        <Pressable
-          onPress={() => onRemove(item.id)}
-          style={({ pressed }) => [
-            styles.actionButton,
-            styles.deleteButton,
-            pressed && styles.pressed,
-          ]}
-        >
-          <MaterialCommunityIcons
-            name="trash-can-outline"
-            size={18}
-            color={AppColors.text.error}
-          />
-        </Pressable>
-
-        <View style={styles.quantityControl}>
-          <Pressable
-            onPress={() => onDecrement(item.id)}
-            style={({ pressed }) => [
-              styles.quantityButton,
-              pressed && styles.pressed,
-            ]}
-          >
-            <Text style={styles.quantityButtonText}>−</Text>
-          </Pressable>
-
-          <Text style={styles.quantity}>{item.quantity}</Text>
-
-          <Pressable
-            onPress={() => onIncrement(item.id)}
-            style={({ pressed }) => [
-              styles.quantityButton,
-              pressed && styles.pressed,
-            ]}
-          >
-            <Text style={styles.quantityButtonText}>+</Text>
-          </Pressable>
+      <View style={{ flex: 1, flexDirection: 'column', gap: Spacing.sm, justifyContent: 'space-between' }}>
+        <View style={styles.content}>
+          <Text style={styles.name} numberOfLines={2}>
+            {item.name}
+          </Text>
+          {/* <Text style={styles.price}>${item.price.toFixed(2)}</Text> */}
         </View>
+        <View>
+          <View style={styles.actions}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+              <Pressable
+                onPress={() => onRemove(item.id)}
+                style={({ pressed }) => [
+                  styles.actionButton,
+                  styles.deleteButton,
+                  pressed && styles.pressed,
+                ]}
+              >
+                <MaterialCommunityIcons
+                  name="trash-can-outline"
+                  size={18}
+                  color={AppColors.text.error}
+                />
+              </Pressable>
 
-        <Text style={styles.total}>
-          ${(item.price * item.quantity).toFixed(2)}
-        </Text>
+              <View style={styles.quantityControl}>
+                {/* <Pressable
+                onPress={() => onDecrement(item.id)}
+                style={({ pressed }) => [
+                  styles.quantityButton,
+                  pressed && styles.pressed,
+                ]}
+              >
+                <Text style={styles.quantityButtonText}>−</Text>
+              </Pressable> */}
+
+                <Text style={styles.quantity}>{item.quantity}</Text>
+
+                <Pressable
+                  onPress={() => onIncrement(item.id)}
+                  style={({ pressed }) => [
+                    styles.quantityButton,
+                    pressed && styles.pressed,
+                  ]}
+                >
+                  <Text style={styles.quantityButtonText}>+</Text>
+                </Pressable>
+              </View>
+            </View>
+            <Text style={styles.total}>
+              ${(item.price * item.quantity).toFixed(2)}
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -104,6 +107,7 @@ const styles = StyleSheet.create({
     borderColor: AppColors.border.light,
     marginBottom: Spacing.md,
     gap: Spacing.md,
+    width: '100%',
   },
   imageContainer: {
     width: 70,
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
   },
   content: {
-    flex: 1,
+    // flex: 1,
   },
   name: {
     fontSize: FontSizes.sm,
@@ -132,13 +136,16 @@ const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     gap: Spacing.sm,
   },
   actionButton: {
-    padding: Spacing.sm,
-    borderRadius: BorderRadius.md,
-    borderWidth: 1,
-    borderColor: AppColors.border.light,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: AppColors.background.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   deleteButton: {
     borderColor: AppColors.text.error,
@@ -149,14 +156,16 @@ const styles = StyleSheet.create({
   quantityControl: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: AppColors.border.light,
     borderRadius: BorderRadius.md,
     overflow: 'hidden',
   },
   quantityButton: {
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.xs,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: AppColors.background.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   quantityButtonText: {
     fontSize: FontSizes.lg,

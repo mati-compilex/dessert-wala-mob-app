@@ -84,41 +84,38 @@ export const PriceSummary: React.FC<PriceSummaryProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: AppColors.background.white,
+    backgroundColor: AppColors.background.accent,
     borderRadius: 8,
     padding: Spacing.md,
     marginVertical: Spacing.md,
     borderWidth: 1,
-    borderColor: AppColors.border.light,
+    borderColor: AppColors.primary,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: Spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: AppColors.border.light,
+    paddingVertical: Spacing.xs,
   },
   totalRow: {
     borderBottomWidth: 0,
-    paddingTop: Spacing.md,
-    marginTop: Spacing.sm,
   },
   label: {
-    fontSize: FontSizes.sm,
+    fontSize: FontSizes.xs,
     color: AppColors.text.medium,
+    fontWeight: FontWeights.semibold,
   },
   totalLabel: {
-    fontSize: FontSizes.md,
-    fontWeight: FontWeights.semibold,
+    fontSize: FontSizes.xs,
+    fontWeight: FontWeights.medium,
     color: AppColors.text.dark,
   },
   value: {
-    fontSize: FontSizes.sm,
+    fontSize: FontSizes.xs,
     fontWeight: FontWeights.medium,
     color: AppColors.text.dark,
   },
   totalValue: {
-    fontSize: FontSizes.md,
+    fontSize: FontSizes.xs,
     fontWeight: FontWeights.bold,
     color: AppColors.primary,
   },

@@ -2,19 +2,20 @@ import { CartItem, CartItemRow } from '@/components/app/CartItemRow';
 import { PriceSummary } from '@/components/app/PriceSummary';
 import { StepIndicator } from '@/components/app/StepIndicator';
 import { Button } from '@/components/auth/Button';
-import { TextInput } from '@/components/auth/TextInput';
 import { AppColors } from '@/constants/colors';
 import { BorderRadius, Spacing } from '@/constants/spacing';
 import { FontSizes, FontWeights } from '@/constants/typography';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Pressable,
+  TextInput as RNTextInput,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 
 
@@ -27,6 +28,10 @@ export const CartScreen: React.FC<CartScreenProps> = ({
   onBack,
   onCheckout,
 }) => {
+  const router = useRouter();
+  const handleBack = () => router.back();
+  const handleCheckout = () => router.push('/checkout' as any);
+
   const [cartItems, setCartItems] = useState<CartItem[]>([
     {
       id: '1',
@@ -82,11 +87,15 @@ export const CartScreen: React.FC<CartScreenProps> = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
+       
         {/* Header with Back Button */}
         <View style={styles.header}>
           <Pressable
-            onPress={onBack}
-            style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
+            onPress={handleBack}
+            style={({ pressed }) => [
+              styles.headerButton,
+              pressed && styles.pressed,
+            ]}
           >
             <MaterialCommunityIcons
               name="arrow-left"
@@ -94,6 +103,16 @@ export const CartScreen: React.FC<CartScreenProps> = ({
               color={AppColors.text.dark}
             />
           </Pressable>
+          {/* <Pressable
+            onPress={handleBack}
+            style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
+          >
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={24}
+              color={AppColors.text.dark}
+            />
+          </Pressable> */}
           <Text style={styles.title}>My Cart</Text>
           <View style={styles.backButton} />
         </View>
@@ -134,11 +153,12 @@ export const CartScreen: React.FC<CartScreenProps> = ({
               color={AppColors.text.light}
               style={styles.promoIcon}
             />
-            <TextInput
+            <RNTextInput
               placeholder="Type here..."
               value={promoCode}
               onChangeText={setPromoCode}
-              containerStyle={styles.promoInput}
+              style={styles.promoInput}
+              underlineColorAndroid="transparent"
             />
             <Pressable style={styles.applyButton}>
               <Text style={styles.applyButtonText}>Apply</Text>
@@ -155,13 +175,19 @@ export const CartScreen: React.FC<CartScreenProps> = ({
           }}
           containerStyle={styles.priceSummary}
         />
+        <View style={styles.totalSectionContainer}>
+          {/* Total Price */}
+          <View style={styles.totalSection}>
+            <Text style={styles.totalLabel}>Total (incl. fees and tax)</Text>
+            <Text style={styles.totalPrice}>$17.50</Text>
+          </View>
 
-        {/* Checkout Button */}
-        <Button
-          title="Proceed to Checkout"
-          onPress={onCheckout}
-          containerStyle={styles.checkoutButton}
-        />
+
+          <Button
+            title="Proceed to Checkout"
+            onPress={handleCheckout}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -173,7 +199,18 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.background.cream,
   },
   scrollContent: {
-    paddingBottom: Spacing.xl,
+    // paddingBottom: Spacing.xl,
+  },
+ 
+  headerButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: AppColors.background.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: AppColors.border.light,
   },
   header: {
     flexDirection: 'row',
@@ -245,6 +282,8 @@ const styles = StyleSheet.create({
   promoInput: {
     flex: 1,
     marginVertical: 0,
+    borderWidth: 0,
+    outlineWidth: 0,
   },
   applyButton: {
     paddingVertical: Spacing.md,
@@ -259,9 +298,38 @@ const styles = StyleSheet.create({
     marginHorizontal: Spacing.xl,
     marginBottom: Spacing.xl,
   },
-  checkoutButton: {
-    marginHorizontal: Spacing.xl,
+
+  totalSectionContainer: {
+    backgroundColor: AppColors.background.white,
+    borderTopLeftRadius: BorderRadius.xl,
+    borderTopRightRadius: BorderRadius.xl,
+    paddingVertical: Spacing.lg,
+    marginTop: Spacing.md,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.1,
+    shadowRadius: 17,
+    elevation: 10,
+    paddingHorizontal: Spacing.xl,
   },
+
+  totalSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Spacing.lg,
+    marginLeft: Spacing.md,
+  },
+  totalLabel: {
+    fontSize: FontSizes.md,
+    fontWeight: FontWeights.medium,
+    color: AppColors.text.dark,
+  },
+  totalPrice: {
+    fontSize: FontSizes.lg,
+    fontWeight: FontWeights.bold,
+    color: AppColors.primary,
+  }
 });
 
 export default CartScreen;

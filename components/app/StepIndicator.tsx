@@ -93,21 +93,23 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     paddingVertical: Spacing.lg,
     paddingHorizontal: Spacing.md,
-    backgroundColor: AppColors.background.white,
+    // backgroundColor: AppColors.background.white,
     borderRadius: BorderRadius.lg,
   },
   stepWrapper: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   stepContent: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: Spacing.sm,
     width: '100%',
+    marginLeft: 70,
   },
   circle: {
     width: 32,
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: FontSizes.xs,
     color: AppColors.text.light,
-    textAlign: 'center',
+    // textAlign: 'center',
     marginTop: Spacing.xs,
   },
   labelActive: {

@@ -3,14 +3,15 @@ import { AppColors } from '@/constants/colors';
 import { BorderRadius, Spacing } from '@/constants/spacing';
 import { FontSizes, FontWeights } from '@/constants/typography';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 
 
@@ -21,6 +22,8 @@ interface OrderSuccessScreenProps {
 export const OrderSuccessScreen: React.FC<OrderSuccessScreenProps> = ({
   onTrackOrder,
 }) => {
+  const router = useRouter();
+  const handleBack = () => router.back();
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -29,13 +32,26 @@ export const OrderSuccessScreen: React.FC<OrderSuccessScreenProps> = ({
       >
         {/* Back Button */}
         <View style={styles.headerContainer}>
-          <Pressable style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}>
+          <Pressable
+            onPress={handleBack}
+            style={({ pressed }) => [
+              styles.headerButton,
+              pressed && styles.pressed,
+            ]}
+          >
             <MaterialCommunityIcons
               name="arrow-left"
               size={24}
               color={AppColors.text.dark}
             />
           </Pressable>
+          {/* <Pressable style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}>
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={24}
+              color={AppColors.text.dark}
+            />
+          </Pressable> */}
         </View>
 
         {/* Success Icon Animation Container */}
@@ -96,11 +112,13 @@ export const OrderSuccessScreen: React.FC<OrderSuccessScreenProps> = ({
         </View>
 
         {/* Track Order Button */}
-        <Button
-          title="Track Your Order"
-          onPress={onTrackOrder}
-          containerStyle={styles.trackButton}
-        />
+        <View style={{ marginHorizontal: Spacing.xl }}>
+          <Button
+            title="Track Your Order"
+            onPress={onTrackOrder}
+          // containerStyle={styles.trackButton}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -119,6 +137,16 @@ const styles = StyleSheet.create({
   headerContainer: {
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.lg,
+  },
+  headerButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: AppColors.background.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: AppColors.border.light,
   },
   backButton: {
     width: 44,

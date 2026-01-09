@@ -7,12 +7,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Image,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 
 
@@ -93,7 +94,8 @@ export const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
 
         {/* Product Image */}
         <View style={styles.imageContainer}>
-          <View style={styles.imagePlaceholder} />
+          <Image source={require('../../assets/images/Croissants.png')} style={styles.imagePlaceholder} />
+          {/* <View style={styles.imagePlaceholder} /> */}
         </View>
 
         {/* Product Info */}
@@ -139,7 +141,7 @@ export const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
         </View>
 
         {/* Special Instructions */}
-        <View style={styles.section}>
+        <View style={styles.section2}>
           <Text style={styles.sectionTitle}>Special Instructions</Text>
           <TextInput
             placeholder="Add extra tissues..."
@@ -153,42 +155,44 @@ export const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
             {specialInstructions.length}/100
           </Text>
         </View>
+        <View style={styles.totalSectionContainer}>
+          <View style={styles.totalSectionWrapper}>
+            {/* Total Price */}
+            <View style={styles.totalSection}>
+              <Text style={styles.totalLabel}>Total Price</Text>
+              <Text style={styles.totalPrice}>${totalPrice.toFixed(2)}</Text>
+            </View>
 
-        {/* Total Price */}
-        <View style={styles.totalSection}>
-          <Text style={styles.totalLabel}>Total Price</Text>
-          <Text style={styles.totalPrice}>${totalPrice.toFixed(2)}</Text>
+            {/* Quantity Control */}
+            <View style={styles.quantitySection}>
+              <Pressable
+                onPress={decrementQuantity}
+                style={({ pressed }) => [
+                  styles.quantityButton,
+                  pressed && styles.pressed,
+                ]}
+              >
+                <Text style={styles.quantityButtonText}>−</Text>
+              </Pressable>
+              <Text style={styles.quantity}>{quantity}</Text>
+              <Pressable
+                onPress={incrementQuantity}
+                style={({ pressed }) => [
+                  styles.quantityButton,
+                  pressed && styles.pressed,
+                ]}
+              >
+                <Text style={styles.quantityButtonText}>+</Text>
+              </Pressable>
+            </View>
+          </View>
+
+          {/* View Cart Button */}
+          <Button
+            title="View your Cart"
+            onPress={handleViewCart}
+          />
         </View>
-
-        {/* Quantity Control */}
-        <View style={styles.quantitySection}>
-          <Pressable
-            onPress={decrementQuantity}
-            style={({ pressed }) => [
-              styles.quantityButton,
-              pressed && styles.pressed,
-            ]}
-          >
-            <Text style={styles.quantityButtonText}>−</Text>
-          </Pressable>
-          <Text style={styles.quantity}>{quantity}</Text>
-          <Pressable
-            onPress={incrementQuantity}
-            style={({ pressed }) => [
-              styles.quantityButton,
-              pressed && styles.pressed,
-            ]}
-          >
-            <Text style={styles.quantityButtonText}>+</Text>
-          </Pressable>
-        </View>
-
-        {/* View Cart Button */}
-        <Button
-          title="View your Cart"
-          onPress={handleViewCart}
-          containerStyle={styles.viewCartButton}
-        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -200,13 +204,18 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.background.cream,
   },
   scrollContent: {
-    paddingBottom: Spacing.xl,
+    // paddingBottom: Spacing.xl,
   },
   headerButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.lg,
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    right: 0,
+    zIndex: 10,
   },
   headerButton: {
     width: 44,
@@ -223,15 +232,17 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: 300,
-    marginHorizontal: Spacing.xl,
+    // marginHorizontal: Spacing.xl,
     marginBottom: Spacing.xl,
     borderRadius: BorderRadius.lg,
     overflow: 'hidden',
+    marginTop: 20,
   },
   imagePlaceholder: {
     width: '100%',
     height: '100%',
     backgroundColor: '#E8E0D5',
+    borderRadius: BorderRadius.xl,
   },
   productInfo: {
     paddingHorizontal: Spacing.xl,
@@ -262,11 +273,18 @@ const styles = StyleSheet.create({
   section: {
     marginHorizontal: Spacing.xl,
     marginBottom: Spacing.xl,
-    backgroundColor: AppColors.background.white,
     borderRadius: BorderRadius.lg,
     padding: Spacing.md,
     borderWidth: 1,
     borderColor: AppColors.border.light,
+    backgroundColor: AppColors.background.accent,
+
+  },
+  section2: {
+    marginHorizontal: Spacing.xl,
+    marginBottom: Spacing.xl,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.md,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -325,12 +343,28 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.xs,
     color: AppColors.text.light,
   },
-  totalSection: {
+  totalSectionContainer: {
+    backgroundColor: AppColors.background.white,
+    borderTopLeftRadius: BorderRadius.xl,
+    borderTopRightRadius: BorderRadius.xl,
+    paddingVertical: Spacing.lg,
+    marginTop: Spacing.md,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.1,
+    shadowRadius: 17,
+    elevation: 10,
+    paddingHorizontal: Spacing.xl,
+  },
+  totalSectionWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: Spacing.xl,
+    marginBottom: Spacing.xl,
+  },
+  totalSection: {
     marginBottom: Spacing.lg,
+    marginLeft: Spacing.md,
   },
   totalLabel: {
     fontSize: FontSizes.md,
@@ -346,14 +380,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: Spacing.lg,
     marginBottom: Spacing.xl,
   },
   quantityButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: AppColors.background.white,
+    backgroundColor: AppColors.background.accent,
     borderWidth: 1,
     borderColor: AppColors.border.light,
     alignItems: 'center',
@@ -363,16 +396,15 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.xl,
     fontWeight: FontWeights.bold,
     color: AppColors.primary,
+    marginTop: -4,
+
   },
   quantity: {
     fontSize: FontSizes.md,
     fontWeight: FontWeights.semibold,
-    color: AppColors.text.dark,
+    color: AppColors.primary,
     minWidth: 30,
     textAlign: 'center',
-  },
-  viewCartButton: {
-    marginHorizontal: Spacing.xl,
   },
 });
 

@@ -1,19 +1,19 @@
-import { PriceSummary } from '@/components/app/PriceSummary';
 import { StepIndicator } from '@/components/app/StepIndicator';
 import { Button } from '@/components/auth/Button';
-import { TextInput } from '@/components/auth/TextInput';
 import { AppColors } from '@/constants/colors';
 import { BorderRadius, Spacing } from '@/constants/spacing';
 import { FontSizes, FontWeights } from '@/constants/typography';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Pressable,
+  TextInput as RNTextInput,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 
 
@@ -26,6 +26,9 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
   onBack,
   onPlaceOrder,
 }) => {
+  const router = useRouter();
+  const handleBack = () => router.back();
+  const handlePlaceOrder = () => router.push('/order-success' as any);
   const [deliveryType, setDeliveryType] = useState<'delivery' | 'pickup'>('delivery');
   const [selectedPayment, setSelectedPayment] = useState<'card' | 'googlepay'>('card');
   const [address, setAddress] = useState('15A High Street, Hemei Hampstead');
@@ -49,6 +52,19 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
         {/* Header with Back Button */}
         <View style={styles.header}>
           <Pressable
+            onPress={handleBack}
+            style={({ pressed }) => [
+              styles.headerButton,
+              pressed && styles.pressed,
+            ]}
+          >
+            <MaterialCommunityIcons
+              name="arrow-left"
+              size={24}
+              color={AppColors.text.dark}
+            />
+          </Pressable>
+          {/* <Pressable
             onPress={onBack}
             style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
           >
@@ -57,7 +73,7 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
               size={24}
               color={AppColors.text.dark}
             />
-          </Pressable>
+          </Pressable> */}
           <Text style={styles.title}>Checkout</Text>
           <View style={styles.backButton} />
         </View>
@@ -82,7 +98,7 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
               size={20}
               color={
                 deliveryType === 'delivery'
-                  ? AppColors.background.white
+                  ? AppColors.primary
                   : AppColors.text.medium
               }
             />
@@ -108,7 +124,7 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
               size={20}
               color={
                 deliveryType === 'pickup'
-                  ? AppColors.background.white
+                  ? AppColors.primary
                   : AppColors.text.medium
               }
             />
@@ -134,11 +150,12 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
                 size={20}
                 color={AppColors.text.light}
               />
-              <TextInput
+              <RNTextInput
                 placeholder="Search for address"
                 value={address}
                 onChangeText={setAddress}
-                containerStyle={styles.addressInput}
+                style={styles.addressInput}
+                underlineColorAndroid="transparent"
               />
               <MaterialCommunityIcons
                 name="crosshairs-gps"
@@ -164,117 +181,117 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
         {/* Payment Method */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Payment Method</Text>
+          <View style={styles.paymentSection}>
+            <Pressable
+              style={[
+                styles.paymentOption,
+                selectedPayment === 'card' && styles.paymentOptionSelected,
+              ]}
+              onPress={() => setSelectedPayment('card')}
+            >
+              <View style={styles.paymentRadio}>
+                {selectedPayment === 'card' && (
+                  <View style={styles.paymentRadioFilled} />
+                )}
+              </View>
+              <View style={styles.paymentContent}>
+                <Text style={styles.paymentLabel}>Credit/Debit Card</Text>
+              </View>
+              <MaterialCommunityIcons
+                name="chevron-right"
+                size={24}
+                color={AppColors.text.light}
+              />
+            </Pressable>
 
-          <Pressable
-            style={[
-              styles.paymentOption,
-              selectedPayment === 'card' && styles.paymentOptionSelected,
-            ]}
-            onPress={() => setSelectedPayment('card')}
-          >
-            <View style={styles.paymentRadio}>
-              {selectedPayment === 'card' && (
-                <View style={styles.paymentRadioFilled} />
-              )}
-            </View>
-            <View style={styles.paymentContent}>
-              <Text style={styles.paymentLabel}>Credit/Debit Card</Text>
-            </View>
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={24}
-              color={AppColors.text.light}
-            />
-          </Pressable>
-
-          <Pressable
-            style={[
-              styles.paymentOption,
-              selectedPayment === 'googlepay' && styles.paymentOptionSelected,
-            ]}
-            onPress={() => setSelectedPayment('googlepay')}
-          >
-            <View style={styles.paymentRadio}>
-              {selectedPayment === 'googlepay' && (
-                <View style={styles.paymentRadioFilled} />
-              )}
-            </View>
-            <View style={styles.paymentContent}>
-              <Text style={styles.paymentLabel}>Google Pay</Text>
-            </View>
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={24}
-              color={AppColors.text.light}
-            />
-          </Pressable>
+            <Pressable
+              style={[
+                styles.paymentOption,
+                selectedPayment === 'googlepay' && styles.paymentOptionSelected,
+              ]}
+              onPress={() => setSelectedPayment('googlepay')}
+            >
+              <View style={styles.paymentRadio}>
+                {selectedPayment === 'googlepay' && (
+                  <View style={styles.paymentRadioFilled} />
+                )}
+              </View>
+              <View style={styles.paymentContent}>
+                <Text style={styles.paymentLabel}>Google Pay</Text>
+              </View>
+              <MaterialCommunityIcons
+                name="chevron-right"
+                size={24}
+                color={AppColors.text.light}
+              />
+            </Pressable>
+          </View>
         </View>
 
         {/* Order Summary */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Order summary</Text>
+          <View style={styles.paymentSection}>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryLabel}>2x Red Velvet Cupcake</Text>
+              <Text style={styles.summaryValue}>$ 8.00</Text>
+            </View>
 
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>2x Red Velvet Cupcake</Text>
-            <Text style={styles.summaryValue}>$ 8.00</Text>
-          </View>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryLabel}>
+                1x Flaky Butter Croissant (250 gm){'\n'}with Whipped Cream
+              </Text>
+              <Text style={styles.summaryValue}>$ 5.50</Text>
+            </View>
 
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>
-              1x Flaky Butter Croissant (250 gm){'\n'}with Whipped Cream
-            </Text>
-            <Text style={styles.summaryValue}>$ 5.50</Text>
-          </View>
+            <View style={styles.summaryDivider} />
 
-          <View style={styles.summaryDivider} />
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryLabel}>Subtotal</Text>
+              <Text style={styles.summaryValue}>$ {subtotal.toFixed(2)}</Text>
+            </View>
 
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>Subtotal</Text>
-            <Text style={styles.summaryValue}>$ {subtotal.toFixed(2)}</Text>
-          </View>
-
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>Delivery Fee</Text>
-            <Text style={styles.summaryValue}>$ {deliveryFee.toFixed(2)}</Text>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryLabel}>Delivery Fee</Text>
+              <Text style={styles.summaryValue}>$ {deliveryFee.toFixed(2)}</Text>
+            </View>
           </View>
         </View>
 
         {/* Special Notes */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Any notes for the rider?</Text>
-          <TextInput
+          <RNTextInput
             placeholder="Leave on the door..."
             value={notes}
             onChangeText={setNotes}
             multiline
             numberOfLines={3}
-            containerStyle={styles.notesInput}
+            style={styles.notesInput}
+            underlineColorAndroid="transparent"
           />
         </View>
 
-        {/* Price Summary */}
-        <PriceSummary
-          data={{
-            subtotal,
-            deliveryFee,
-          }}
-          containerStyle={styles.priceSummary}
-        />
-
         {/* Terms and Conditions */}
-        <View style={styles.termsContainer}>
-          <Text style={styles.termsText}>
-            By placing this order, I agreed with all the{' '}
-            <Text style={styles.termsLink}>Terms and Conditions</Text>
-          </Text>
-        </View>
+        <View style={styles.totalSectionContainer}>
+          {/* Total Price */}
+          <View style={styles.totalSection}>
+            <Text style={styles.totalLabel}>Total (incl. fees and tax)</Text>
+            <Text style={styles.totalPrice}>$17.50</Text>
+          </View>
 
-        {/* Place Order Button */}
-        <Button
-          title="Place Order"
-          onPress={onPlaceOrder}
-          containerStyle={styles.placeOrderButton}
-        />
+          <Button
+            title="Place Order"
+            onPress={handlePlaceOrder}
+            containerStyle={styles.placeOrderButton}
+          />
+          <View style={styles.termsContainer}>
+            <Text style={styles.termsText}>
+              By placing this order, I agreed with all the{' '}
+              <Text style={styles.termsLink}>Terms and Conditions</Text>
+            </Text>
+          </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -283,7 +300,7 @@ export const CheckoutScreen: React.FC<CheckoutScreenProps> = ({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: AppColors.background.cream,
+    backgroundColor: AppColors.background.light,
   },
   scrollContent: {
     paddingBottom: Spacing.xl,
@@ -294,6 +311,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.lg,
+  },
+  headerButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: AppColors.background.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: AppColors.border.light,
   },
   backButton: {
     width: 44,
@@ -318,6 +345,12 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     marginHorizontal: Spacing.xl,
     marginBottom: Spacing.xl,
+    backgroundColor: AppColors.background.accent,
+    borderWidth: 1,
+    borderRadius: BorderRadius.round,
+    borderColor: AppColors.border.light,
+    overflow: 'hidden',
+    padding: Spacing.xs,
   },
   deliveryTypeButton: {
     flex: 1,
@@ -327,14 +360,15 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.lg,
-    backgroundColor: AppColors.background.white,
+    // backgroundColor: AppColors.background.white,
     borderRadius: BorderRadius.round,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: AppColors.border.light,
   },
   deliveryTypeButtonActive: {
-    backgroundColor: AppColors.primary,
+    backgroundColor: AppColors.background.accentDark,
     borderColor: AppColors.primary,
+    borderWidth: 1
   },
   deliveryTypeText: {
     fontSize: FontSizes.sm,
@@ -342,7 +376,7 @@ const styles = StyleSheet.create({
     color: AppColors.text.medium,
   },
   deliveryTypeTextActive: {
-    color: AppColors.background.white,
+    color: AppColors.primary,
   },
   section: {
     marginHorizontal: Spacing.xl,
@@ -351,22 +385,25 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: FontSizes.md,
     fontWeight: FontWeights.semibold,
-    color: AppColors.text.dark,
+    color: AppColors.text.mehndi,
     marginBottom: Spacing.md,
   },
   addressSearchBox: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: AppColors.background.white,
-    borderRadius: BorderRadius.lg,
+    borderRadius: BorderRadius.round,
     paddingHorizontal: Spacing.md,
     marginBottom: Spacing.md,
     borderWidth: 1,
     borderColor: AppColors.border.light,
+    paddingVertical: 10
   },
   addressInput: {
     flex: 1,
     marginVertical: 0,
+    borderWidth: 0,
+    outlineWidth: 0,
   },
   mapContainer: {
     height: 200,
@@ -386,20 +423,39 @@ const styles = StyleSheet.create({
     marginLeft: -16,
     marginTop: -32,
   },
+  paymentSection: {
+    backgroundColor: AppColors.background.white,
+    borderRadius: BorderRadius.xl,
+    padding: Spacing.sm,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.1,
+    shadowRadius: 17,
+    elevation: 10,
+    borderColor: AppColors.primary,
+    borderWidth: 1
+
+  },
+  paymentSectionTitle: {
+    fontSize: FontSizes.md,
+    fontWeight: FontWeights.semibold,
+    color: AppColors.text.dark,
+    marginBottom: Spacing.md,
+  },
   paymentOption: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.md,
-    backgroundColor: AppColors.background.white,
-    borderRadius: BorderRadius.lg,
-    marginBottom: Spacing.md,
-    borderWidth: 1,
-    borderColor: AppColors.border.light,
+    // backgroundColor: AppColors.background.white,
+    // borderRadius: BorderRadius.lg,
+    // marginBottom: Spacing.md,
+    // borderWidth: 1,
+    // borderColor: AppColors.border.light,
   },
   paymentOptionSelected: {
-    borderColor: AppColors.primary,
-    backgroundColor: '#FFF5F0',
+    // borderColor: AppColors.primary,
+    // backgroundColor: '#FFF5F0',
   },
   paymentRadio: {
     width: 20,
@@ -430,24 +486,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     paddingVertical: Spacing.sm,
-    backgroundColor: AppColors.background.white,
-    paddingHorizontal: Spacing.md,
-    borderRadius: BorderRadius.lg,
-    marginBottom: Spacing.md,
-    borderWidth: 1,
-    borderColor: AppColors.border.light,
+    // backgroundColor: AppColors.background.white,
+    // paddingHorizontal: Spacing.md,
+    // borderRadius: BorderRadius.lg,
+    // marginBottom: Spacing.md,
+    // borderWidth: 1,
+    // borderColor: AppColors.border.light,
   },
   summaryLabel: {
     flex: 1,
     fontSize: FontSizes.xs,
-    color: AppColors.text.dark,
     fontWeight: FontWeights.medium,
     marginRight: Spacing.md,
+    color: AppColors.text.falcon
+
   },
   summaryValue: {
     fontSize: FontSizes.xs,
     fontWeight: FontWeights.semibold,
-    color: AppColors.primary,
+    color: AppColors.text.falcon
   },
   summaryDivider: {
     height: 1,
@@ -456,6 +513,17 @@ const styles = StyleSheet.create({
   },
   notesInput: {
     marginBottom: Spacing.md,
+    borderWidth: 1,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.md,
+    backgroundColor: AppColors.background.light,
+    color: AppColors.text.dark,
+    fontSize: FontSizes.sm,
+    fontWeight: FontWeights.medium,
+    height: 100,
+    borderColor: AppColors.text.mehndi,
+    outlineWidth: 0,
+
   },
   priceSummary: {
     marginHorizontal: Spacing.xl,
@@ -468,16 +536,47 @@ const styles = StyleSheet.create({
   termsText: {
     fontSize: FontSizes.xs,
     color: AppColors.text.medium,
-    textAlign: 'center',
     lineHeight: 18,
+    marginTop: 5
   },
   termsLink: {
     color: AppColors.primary,
     fontWeight: FontWeights.semibold,
   },
   placeOrderButton: {
-    marginHorizontal: Spacing.xl,
+    // marginHorizontal: Spacing.xl,
   },
+  totalSectionContainer: {
+    backgroundColor: AppColors.background.white,
+    borderTopLeftRadius: BorderRadius.xl,
+    borderTopRightRadius: BorderRadius.xl,
+    paddingVertical: Spacing.lg,
+    marginTop: Spacing.md,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.1,
+    shadowRadius: 17,
+    elevation: 10,
+    paddingHorizontal: Spacing.xl,
+  },
+
+  totalSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Spacing.lg,
+    marginLeft: Spacing.md,
+  },
+  totalLabel: {
+    fontSize: FontSizes.md,
+    fontWeight: FontWeights.medium,
+    color: AppColors.text.dark,
+  },
+  totalPrice: {
+    fontSize: FontSizes.lg,
+    fontWeight: FontWeights.bold,
+    color: AppColors.primary,
+  }
 });
 
 export default CheckoutScreen;

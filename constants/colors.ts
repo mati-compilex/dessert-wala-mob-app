@@ -5,7 +5,7 @@
 
 export const AppColors = {
   // Primary Colors
-  primary: '#B8651B', // Brown/Orange primary color
+  primary: '#B85D25', // Brown/Orange primary color
   primaryDark: '#9A5217',
   primaryLight: '#D4854A',
 
@@ -15,6 +15,8 @@ export const AppColors = {
     medium: '#666666', // Medium gray
     light: '#999999', // Light gray
     error: '#D32F2F', // Error red
+    falcon: '#836767',
+    mehndi: '#473311'
   },
 
   // Background Colors
@@ -23,6 +25,8 @@ export const AppColors = {
     cream: '#F9F7F2', // Light cream background
     light: '#F5F3F0',
     input: '#FAFAFA',
+    accent: '#FFFAED', // Light brown accent background
+    accentDark: '#FFEFCC',
   },
 
   // Border Colors
